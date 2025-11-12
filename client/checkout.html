@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Checkout - QB Jewellery</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+
+    <section class="checkout-section">
+        <div class="checkout-card">
+            <h1>Checkout</h1>
+            <form id="checkout-form" class="checkout-form">
+                <input class="input checkout-input" name="fullName" placeholder="Full Name" required>
+                <input class="input checkout-input" name="address" placeholder="Address" required>
+                <input class="input checkout-input" name="city" placeholder="City" required>
+                <input class="input checkout-input" name="pincode" placeholder="Pincode" type="number" required>
+                <input class="input checkout-input" name="cardNumber" placeholder="Card Number" type="number" required>
+                <button class="btn checkout-btn" type="submit">Place Order</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        &copy; 2025 Golden Jewellery. All rights reserved.
+        <div class="footer-moto">Pure • Elegant • Timeless</div>
+    </footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+    function updateHeaderLinks() {
+        const role = getRole();
+        const profileLink = document.getElementById('profile-link');
+        
+        if (profileLink) {
+            if (role) {
+                profileLink.href = 'profile.html';
+                profileLink.textContent = 'Profile'; 
+            } else {
+                profileLink.href = 'login.html';
+                profileLink.textContent = 'Login';
+            }
+        }
+    }
+    updateHeaderLinks();
+
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Ensure there are items in the cart before placing an order
+        if (!getCart().length) {
+            alert('Your cart is empty!');
+            window.location.href = 'cart.html';
+            return;
+        }
+
+        const formData = new FormData(e.target);
+        const orderDetails = Object.fromEntries(formData.entries());
+
+        // Call the function to finalize the order (defined in app.js)
+        placeOrder(orderDetails);
+    });
+</script>
+</body>
+</html>

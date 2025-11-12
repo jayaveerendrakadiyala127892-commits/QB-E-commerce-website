@@ -1,0 +1,41 @@
+[
+  {
+    "id": "p1",
+    "title": "Antique Gold Necklace",
+    "category": "Necklaces",
+    "price": 45000,
+    "stock": 5,
+    "image": "../assets/images/necklace1.jpeg", 
+    "tags": [
+      "necklace",
+      "antique",
+      "gold"
+    ]
+  },
+  {
+    "id": "p2",
+    "title": "Gold Bracelet Bangle",
+    "category": "Bangles",
+    "price": 25000,
+    "stock": 8,
+    "image": "../assets/images/bangle1.webp",
+    "tags": [
+      "bangle",
+      "bracelet",
+      "gold"
+    ]
+  },
+  {
+    "id": "p3",
+    "title": "Gold Ring with Diamond",
+    "category": "Rings",
+    "price": 15000,
+    "stock": 10,
+    "image": "../assets/images/ring1.jpeg",
+    "tags": [
+      "ring",
+      "diamond",
+      "gold"
+    ]
+  }
+]

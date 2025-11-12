@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Register - QB Jewellery</title>
+  <link rel="stylesheet" href="../assets/css/register.css">
+</head>
+<body>
+  <div class="register-container">
+    <!-- Left Golden Welcome Section -->
+    <div class="register-left">
+      <div class="welcome-text">
+        <h1>Welcome!</h1>
+        <h2>Join <br><strong>QB JEWELLERY</strong></h2>
+      </div>
+    </div>
+
+    <!-- Right Registration Form -->
+    <div class="register-right">
+      <div class="register-card">
+        <h2>Create Account</h2>
+        <form id="reg">
+          <label>Full Name</label>
+          <input class="input" id="rname" placeholder="Full name" required>
+
+          <label>Email</label>
+          <input class="input" id="remail" type="email" placeholder="Email address" required>
+
+          <label>Password</label>
+          <input class="input" id="rpass" type="password" placeholder="Password" required>
+
+          <button class="register-btn" type="submit">Create Account</button>
+
+          <p class="login-text">Already have an account? 
+            <a href="login.html">Login here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.getElementById('reg').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Account created (demo). Please login.');
+    window.location.href = 'login.html';
+  });
+  </script>
+</body>
+</html>

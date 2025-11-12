@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>QB Jewellery - Home</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn" onclick="doSearch()">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+    <section class="hero-section">
+        <div class="hero-card">
+            <button class="arrow-btn left-arrow" onclick="plusSlides(-1)">‹</button>
+            <div id="hero-slider" class="hero-slider">
+            </div>
+            <button class="arrow-btn right-arrow" onclick="plusSlides(1)">›</button>
+        </div>
+    </section>
+    <section>
+        <h2 id="featured-heading">Featured</h2>
+        <div id="featured" class="grid"></div>
+    </section>
+    <footer class="footer"><p>© 2025 Golden Jewellery. All rights reserved.</p>
+    <p>Pure • Elegant • Timeless</p></footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+const slideData = [
+    {
+        img: "https://www.vaibhavjewellers.com/media/catalog/category/vaibhavjewellers_antique_necklace_mob_1.jpg",
+        title: "Exquisite Gold Collections",
+        text: "Discover timeless elegance and craftsmanship."
+    },
+    {
+        img: "https://media.istockphoto.com/id/2215986510/photo/a-close-up-of-a-vintage-gold-ring.jpg?s=612x612&w=0&k=20&c=hfQyiw35INsd43zazcf2R3B3NyZF_Dnvk-cvGhEyIW4=", 
+        title: "New Diamond Rings",
+        text: "Sparkle with our newest diamond collection."
+    },
+    {
+        img: "https://images8.alphacoders.com/107/thumb-1920-1077329.jpg    ", 
+        title: "Exclusive Offers",
+        text: "Up to 30% off on selected items this week."
+    }
+];
+
+let slideIndex = 0;
+const slideInterval = 5000;
+let globalProducts = [];
+
+function renderSlides() {
+    const slider = document.getElementById('hero-slider');
+    slider.innerHTML = slideData.map((slide, index) => `
+        <div class="hero-slide" style="display: none;">
+            <div class="hero-content">
+                <img src="${slide.img}" alt="${slide.title}" class="hero-img">
+                <div class="hero-text">
+                    <h2>${slide.title}</h2>
+                    <p class="small">${slide.text}</p>
+                    <div class="hero-buttons">
+                        <a href='shop.html' class="btn shop-btn">Shop Now</a>
+                        <a href='about.html' class="btn about-btn">About Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    showSlides(slideIndex);
+}
+
+function showSlides(n) {
+    const slides = document.getElementsByClassName("hero-slide");
+    if (slides.length === 0) return;
+    
+    if (n >= slides.length) { slideIndex = 0 }
+    else if (n < 0) { slideIndex = slides.length - 1 }
+    else { slideIndex = n }
+
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    slides[slideIndex].style.display = "flex";
+}
+
+function plusSlides(n) {
+    clearInterval(autoSlide);
+    showSlides(slideIndex += n);
+    autoSlide = setInterval(autoAdvance, slideInterval); 
+}
+window.plusSlides = plusSlides;
+
+function autoAdvance() {
+    showSlides(slideIndex + 1);
+}
+
+let autoSlide;
+function startSlider() {
+    renderSlides();
+    autoSlide = setInterval(autoAdvance, slideInterval); 
+}
+
+function updateHeaderLinks() {
+    const role = getRole();
+    const profileLink = document.getElementById('profile-link');
+    
+    if (profileLink) {
+        if (role) {
+            profileLink.href = 'profile.html';
+            profileLink.textContent = 'Profile'; 
+        } else {
+            profileLink.href = 'login.html';
+            profileLink.textContent = 'Login';
+        }
+    }
+}
+
+window.doSearch = ()=>{
+    const q = document.getElementById('q').value;
+    const results = searchProducts(globalProducts, q);
+    const container = document.getElementById('featured');
+    const heading = document.getElementById('featured-heading');
+
+    if (q.trim() !== "") {
+        heading.textContent = `Search Results for "${q}" (${results.length} items)`;
+    } else {
+        heading.textContent = "Featured";
+    }
+    
+    if (results.length > 0) {
+        container.innerHTML = results.map(p => productCardHtml(p)).join('');
+    } else {
+        container.innerHTML = '<p class="small" style="padding: 15px;">No products found matching your search term.</p>';
+    }
+}
+
+async function init(){
+    startSlider();
+    updateHeaderLinks();
+    
+    globalProducts = await loadInitialProducts(); 
+    
+    const container = document.getElementById('featured');
+    container.innerHTML = globalProducts.map(p => productCardHtml(p)).join('');
+}
+init();
+if(getRole()==='admin') window.location.href = '../admin/admin.html';
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Admin - Products</title><link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<div class="container admin-layout">
+  <aside class="admin-sidebar"><div class="brand">QB jwellery - Admin</div><nav style="margin-top:12px"><a href="admin.html">Dashboard</a><br><a href="products.html">Products</a><br><a href="add-product.html">Add Product</a></nav></aside>
+  <main style="flex:1">
+    <h2>Products</h2>
+    <div id="list"></div>
+  </main>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+if(getRole() !== 'admin'){ window.location.href = '../client/login.html'; }
+async function renderProducts(){
+  const prods = await loadInitialProducts();
+  const rows = prods.map(p=>`<div class="card"><div style="display:flex;gap:12px;align-items:center"><img src="${p.image}" style="width:70px;height:70px"/><div style="flex:1"><strong>${p.title}</strong><div class="small">${p.category}</div></div><div><button class="btn" onclick="deleteProduct('${p.id}')">Delete</button></div></div></div>`);
+  document.getElementById('list').innerHTML = rows.join('');
+}
+function deleteProduct(id){
+  const prods = JSON.parse(localStorage.getItem('qb_products_v1')||'[]');
+  const idx = prods.findIndex(p=>p.id===id); if(idx>=0){ prods.splice(idx,1); saveProducts(prods); renderProducts(); }
+}
+renderProducts();
+</script></body></html>

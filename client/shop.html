@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Shop - QB Jewellery</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+    
+    <section>
+        <h2>Shop</h2>
+        <div style="margin-bottom:12px" class="flex">
+            <input id="q2" class="input" placeholder="Refine search..."><button class="btn" onclick="doSearch2()">Search</button>
+        </div>
+        <div id="products" class="grid"></div>
+    </section>
+    
+    <footer class="footer">QB Jewellery &copy; 2025</footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+function updateHeaderLinks() {
+    const role = getRole();
+    const profileLink = document.getElementById('profile-link');
+    
+    if (profileLink) {
+        if (role) {
+            profileLink.href = 'profile.html';
+            profileLink.textContent = 'Profile'; 
+        } else {
+            profileLink.href = 'login.html';
+            profileLink.textContent = 'Login';
+        }
+    }
+}
+
+async function init(){
+    updateHeaderLinks();
+
+    let products = await loadInitialProducts();
+    const s = sessionStorage.getItem('qb_search');
+    
+    if(s){ 
+        const parsed = JSON.parse(s); 
+        products = parsed.results || products; 
+        sessionStorage.removeItem('qb_search'); 
+    }
+    
+    document.getElementById('products').innerHTML = products.map(productCardHtml).join('');
+    
+    window.doSearch2 = ()=>{ 
+        const q=document.getElementById('q2').value; 
+        const list = searchProducts(products,q); 
+        document.getElementById('products').innerHTML = list.map(productCardHtml).join('');
+        alert(`Found ${list.length} products matching "${q}"`);
+    }
+}
+init();
+</script>
+</body>
+</html>

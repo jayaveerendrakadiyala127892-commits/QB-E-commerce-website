@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>View Product - QB Jewellery</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn" onclick="doSearch()">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+
+    <section id="product-detail-section">
+        <p style="text-align: center; padding: 50px;">Loading product details...</p>
+    </section>
+
+    <footer class="footer">QB Jewellery &copy; 2025</footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+function updateHeaderLinks() {
+    const role = getRole();
+    const profileLink = document.getElementById('profile-link');
+    
+    if (profileLink) {
+        if (role) {
+            profileLink.href = 'profile.html';
+            profileLink.textContent = 'Profile'; 
+        } else {
+            profileLink.href = 'login.html';
+            profileLink.textContent = 'Login';
+        }
+    }
+}
+
+async function renderProductPage() {
+    updateHeaderLinks();
+    
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    const container = document.getElementById('product-detail-section');
+
+    if (!productId) {
+        container.innerHTML = '<p class="center" style="font-size: 18px;">Product ID not found.</p>';
+        return;
+    }
+
+    const allProducts = await loadInitialProducts();
+    const product = allProducts.find(p => p.id === productId);
+
+    if (!product) {
+        container.innerHTML = `<p class="center" style="font-size: 18px;">Product with ID "${productId}" was not found.</p>`;
+        return;
+    }
+    
+    container.innerHTML = `
+        <div class="product-detail-grid">
+            <div class="product-image-container">
+                <img src="${product.image}" alt="${product.title}" class="product-large-img">
+            </div>
+            <div class="product-info-container">
+                <div class="small">${product.category}</div>
+                <h1>${product.title}</h1>
+                <p class="product-description">
+                    Exquisite ${product.category}, handcrafted to perfection. 
+                    This piece features high-purity gold and intricate detailing.
+                </p>
+                <div class="price-stock-flex">
+                    <div class="product-price">₹ ${product.price}</div>
+                    <div class="small product-stock-status">${product.stock > 0 ? product.stock + ' in stock' : 'Out of Stock'}</div>
+                </div>
+                <div class="product-action-buttons">
+                    <button class="btn" onclick="addToCart('${product.id}', 1)">Add to Cart</button>
+                    <button class="btn wishlist-btn" onclick="toggleWishlist('${product.id}')">Wishlist</button>
+                </div>
+            </div>
+        </div>
+        <div style="padding: 20px 0;">
+            <h3>Product Description</h3>
+            <p style="line-height: 1.6;">Product details for the customers to know more about product</p>
+        </div>
+    `;
+    
+    window.doSearch = () => {
+        const q = document.getElementById('q').value;
+        const list = searchProducts(allProducts, q);
+        sessionStorage.setItem('qb_search', JSON.stringify({q, results: list}));
+        window.location.href = 'shop.html';
+    };
+}
+
+renderProductPage();
+</script>
+</body>
+</html> 

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Admin - Users</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container admin-layout">
+    <aside class="admin-sidebar">
+        <div class="brand">QB jwellery - Admin</div>
+        <nav style="margin-top:12px">
+            <a href="admin.html">Dashboard</a><br>
+            <a href="products.html">Products</a><br>
+            <a href="add-product.html">Add Product</a><br>
+            <a href="orders.html">Orders</a><br>
+            <a href="users.html">Users</a><br>
+            <a href="#" onclick="logout()">Logout</a>
+        </nav>
+    </aside>
+    <main style="flex:1">
+        <h2>Users (demo)</h2>
+        <div class="card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>John Doe</td><td>john@example.com</td><td>customer</td></tr>
+                    <tr><td>Admin</td><td>admin@qb.com</td><td>admin</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+if(getRole() !== 'admin'){ window.location.href = '../client/login.html'; }
+</script>
+</body>
+</html>

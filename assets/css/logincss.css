@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff8ef;
+}
+
+/* Main Container */
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+/* LEFT PANEL (Golden Gradient) */
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, #b88a00, #f4d67a);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  padding: 40px;
+}
+
+.welcome-text h1 {
+  font-size: 48px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.welcome-text h2 {
+  font-size: 38px;
+  font-weight: 400;
+  margin-top: 10px;
+  color: #fff8e1;
+}
+
+.welcome-text strong {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* RIGHT PANEL (Form Card) */
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+
+.login-card {
+  width: 80%;
+  max-width: 400px;
+  background: #fff;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+  border-radius: 14px;
+  padding: 40px 45px;
+}
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #b88a00;
+}
+
+/* INPUT FIELDS */
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.login-card label {
+  font-size: 14px;
+  color: #444;
+}
+
+/* FORGOT PASSWORD */
+.forgot {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: #b88a00;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+/* LOGIN BUTTON (Golden Gradient) */
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #b88a00, #f2cf66);
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #a57800, #e0bf5f);
+}
+
+/* REGISTER TEXT */
+.register-text {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.register-text a {
+  color: #b88a00;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+  }
+  .login-left {
+    height: 220px;
+    text-align: center;
+  }
+  .login-right {
+    padding: 30px;
+  }
+}

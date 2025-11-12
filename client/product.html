@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Product - QB jwellery</title><link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<div class="container">
+<header class="header"><div class="brand">QB jwellery</div><nav class="nav"><a href="shop.html">Back to shop</a></nav></header>
+<section id="product" class="card"></section>
+<footer class="footer"></footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+async function init(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const prods = await loadInitialProducts();
+  const p = prods.find(x=>x.id===id);
+  if(!p){ document.getElementById('product').innerHTML='<p>Product not found</p>'; return; }
+  document.getElementById('product').innerHTML = `
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <img src="${p.image}" class="product-img" style="width:320px" />
+      <div style="flex:1"><h2>${p.title}</h2><div class="small">${p.category}</div><h3>₹ ${p.price}</h3><p class="small">${p.stock} in stock</p>
+      <div class="flex" style="margin-top:12px"><button class="btn" onclick="addToCart('${p.id}',1)">Add to cart</button><button class="btn" style="background:#fff;color:var(--accent);border:1px solid #eee" onclick="toggleWishlist('${p.id}')">Wishlist</button></div></div>
+    </div>`;
+}
+init();
+</script></body></html>

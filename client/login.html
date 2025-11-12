@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - QB Jewellery</title>
+  <link rel="stylesheet" href="../assets/css/logincss.css">
+</head>
+<body>
+  <div class="login-container">
+    <!-- Left Gradient Panel -->
+    <div class="login-left">
+      <div class="welcome-text">
+        <h1>QB Jewellery</h1>
+        <h1>Hello!</h1>
+        <h2>Have a <br><strong>GOOD DAY</strong></h2>
+      </div>
+    </div>
+
+    <!-- Right Login Form -->
+    <div class="login-right">
+      <div class="login-card">
+        <h2>Login</h2>
+        <form id="loginform">
+          <label>Username</label>
+          <input type="text" id="username" placeholder="Enter username" required>
+
+          <label>Password</label>
+          <input type="password" id="password" placeholder="Enter password" required>
+
+          
+
+          <button type="submit" class="login-btn">Login</button>
+
+          <p class="register-text">Don’t have an account? 
+            <a href="register.html">Create an account</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  document.getElementById('loginform').addEventListener('submit', function(e){
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      let role = 'user';
+      let redirectUrl = 'index.html';
+
+      if (u.toLowerCase() === 'admin') {
+          role = 'admin';
+          redirectUrl = '../admin/admin.html';
+      }
+      
+      loginUser(u, role);
+      window.location.href = redirectUrl;
+  });
+  </script>
+</body>
+</html>

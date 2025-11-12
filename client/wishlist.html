@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Wishlist - QB Jewellery</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+
+    <section>
+        <h2>Your Wishlist</h2>
+        <div id="wl" class="grid"></div>
+    </section>
+    
+    <footer class="footer">QB Jewellery &copy; 2025</footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+function updateHeaderLinks() {
+    const role = getRole();
+    const profileLink = document.getElementById('profile-link');
+    
+    if (profileLink) {
+        if (role) {
+            profileLink.href = 'profile.html';
+            profileLink.textContent = 'Profile';
+        } else {
+            profileLink.href = 'login.html';
+            profileLink.textContent = 'Login';
+        }
+    }
+}
+
+async function renderWL(){
+    const prods = await loadInitialProducts();
+    const list = getWishlist();
+    const wlContainer = document.getElementById('wl');
+    
+    if(!list.length){ 
+        wlContainer.innerHTML = '<p class="small">No items in your wishlist. Add some sparkle!</p>'; 
+        return; 
+    }
+    
+    wlContainer.innerHTML = list.map(id => { 
+        const p = prods.find(x => x.id === id); 
+        return p ? productCardHtml(p) : '';
+    }).join('');
+}
+
+updateHeaderLinks();
+renderWL();
+</script>
+</body>
+</html>

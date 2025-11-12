@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>QB Jewellery - Profile</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+
+    <section class="profile-section">
+        <div class="card profile-details-card">
+            <h1>User Profile</h1>
+            <div id="user-details">
+                <p>Loading user data...</p>
+            </div>
+            
+            <button class="btn logout-btn" onclick="logout()">Log Out</button>
+
+            <h2>Your Orders</h2>
+            <div class="card orders-card">
+                <ul id="orders"></ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">QB Jewellery &copy; 2025</footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+function updateHeaderLinks() {
+    const role = getRole();
+    const profileLink = document.getElementById('profile-link');
+    
+    if (profileLink) {
+        if (role) {
+            profileLink.href = 'profile.html';
+            profileLink.textContent = 'Profile'; 
+        } else {
+            profileLink.href = 'login.html';
+            profileLink.textContent = 'Login';
+        }
+    }
+}
+
+function displayUserProfile() {
+    const user = getCurrentUser();
+    const detailsContainer = document.getElementById('user-details');
+
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    detailsContainer.innerHTML = `
+        <div class="detail-row">
+            <strong>Username:</strong> <span>${user.username}</span>
+        </div>
+        <div class="detail-row">
+            <strong>Email:</strong> <span>${user.email}</span>
+        </div>
+        <div class="detail-row">
+            <strong>Member Since:</strong> <span>${user.memberSince}</span>
+        </div>
+        <div class="detail-row">
+            <strong>Account Type:</strong> <span>${user.role}</span>
+        </div>
+    `;
+    updateHeaderLinks(); 
+}
+
+async function displayOrders() {
+    const prods = await loadInitialProducts();
+    const allOrders = getOrders();
+    const oElem = document.getElementById('orders');
+    
+    if(!allOrders.length) {
+        oElem.innerHTML = '<p class="small">No orders placed yet.</p>'; 
+        return;
+    }
+    
+    const orderHtml = allOrders.map(order => {
+        const itemsList = order.items.map(cartItem => {
+            const product = prods.find(p => p.id === cartItem.id) || { title: 'Unknown Product', price: 0, image: '' };
+            const itemTotal = product.price * cartItem.qty;
+            
+            return `
+                <li class="order-item-detail flex">
+                    <img src="${product.image}" alt="${product.title}" class="order-item-img">
+                    <div style="flex-grow: 1; padding-left: 10px;">
+                        <strong>${product.title}</strong>
+                        <div class="small">Qty: ${cartItem.qty} x ₹${product.price}</div>
+                    </div>
+                    <div class="badge">₹ ${itemTotal}</div>
+                </li>
+            `;
+        }).join('');
+
+        return `
+            <li class="card order-summary-card">
+                <div class="flex" style="justify-content: space-between; align-items: center; border-bottom: 1px dashed #f0f0f0; padding-bottom: 10px; margin-bottom: 10px;">
+                    <div>
+                        <strong>Order ID: ${order.id}</strong><br>
+                        <span class="small">Date: ${order.date}</span>
+                    </div>
+                    <div class="badge" style="font-size: 14px; background: var(--accent); color: #fff;">
+                        TOTAL: ₹ ${order.total}
+                    </div>
+                </div>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px;">
+                    ${itemsList}
+                </ul>
+            </li>
+        `;
+    }).join('');
+    
+    oElem.innerHTML = orderHtml;
+}
+
+displayUserProfile();
+displayOrders();
+</script>
+</body>
+</html>

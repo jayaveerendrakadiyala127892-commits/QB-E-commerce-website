@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Admin - Orders</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container admin-layout">
+    <aside class="admin-sidebar">
+        <div class="brand">QB jwellery - Admin</div>
+        <nav style="margin-top:12px">
+            <a href="admin.html">Dashboard</a><br>
+            <a href="products.html">Products</a><br>
+            <a href="add-product.html">Add Product</a><br>
+            <a href="orders.html">Orders</a><br>
+            <a href="users.html">Users</a>
+        </nav>
+    </aside>
+    <main style="flex:1">
+        <h2>Customer Orders</h2>
+        <div class="card">
+            <table class="table admin-orders-table" id="orders-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+if(getRole() !== 'admin'){ window.location.href = '../client/login.html'; }
+
+async function renderOrders() {
+    const orders = getOrders();
+    const prods = await loadInitialProducts();
+    const tbody = document.querySelector('#orders-table tbody');
+    
+    if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No orders found.</td></tr>';
+        return;
+    }
+
+    const rows = orders.map(order => {
+        const itemsList = order.items.map(item => {
+            const product = prods.find(p => p.id === item.id) || { title: 'Unknown', price: 0 };
+            return `${product.title} (x${item.qty})`;
+        }).join('<br>');
+        
+        return `
+            <tr>
+                <td>${order.id}</td>
+                <td>${order.date}</td>
+                <td>${order.shipping.fullName} (${order.shipping.city})</td>
+                <td class="order-items-cell">${itemsList}</td>
+                <td><div class="badge">₹ ${order.total}</div></td>
+                <td><button class="btn small-btn">Mark Shipped</button></td>
+            </tr>
+        `;
+    }).join('');
+
+    tbody.innerHTML = rows;
+}
+
+renderOrders();
+</script>
+</body>
+</html>

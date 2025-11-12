@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Admin - Add Product</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<div class="container admin-layout">
+    <aside class="admin-sidebar">
+        <div class="brand">QB jwellery - Admin</div>
+        <nav style="margin-top:12px">
+            <a href="admin.html">Dashboard</a><br>
+            <a href="products.html">Products</a><br>
+            <a href="add-product.html">Add Product</a>
+        </nav>
+    </aside>
+    <main style="flex:1">
+        <h2>Add Product</h2>
+        <form id="add" class="card">
+            <input class="input" id="title" placeholder="Title" required>
+            <input class="input" id="category" placeholder="Category">
+            <input class="input" id="price" placeholder="Price (number)" type="number" required>
+            <input class="input" id="stock" placeholder="Stock (number)" type="number" required>
+
+            <input class="input" id="image-url" placeholder="Image URL (optional)">
+            
+            <div class="flex" style="gap: 10px; align-items: center;">
+                <input type="file" id="image-file" accept="image/*" style="display: none;">
+                
+                <button type="button" class="btn" onclick="document.getElementById('image-file').click()" style="flex-grow: 1;">
+                    Choose Image (Local File)
+                </button>
+                <span id="file-name" class="small" style="flex-grow: 3; color: var(--muted);">No file selected.</span>
+            </div>
+            
+            <div class="flex">
+                <button class="btn" type="submit">Add Product</button>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+if(getRole() !== 'admin'){ window.location.href = '../client/login.html'; }
+
+// Display selected filename
+document.getElementById('image-file').addEventListener('change', function() {
+    const fileName = this.files.length > 0 ? this.files[0].name : 'No file selected.';
+    document.getElementById('file-name').textContent = fileName;
+});
+
+document.getElementById('add').addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    const urlInput = document.getElementById('image-url').value.trim();
+    const fileInput = document.getElementById('image-file');
+    const selectedFile = fileInput.files[0];
+    let finalImageSource = '';
+
+    if (selectedFile) {
+        // PRIORITY 1: Convert local file to Base64
+        try {
+            finalImageSource = await convertFileToBase64(selectedFile);
+        } catch (error) {
+            console.error('File conversion error:', error);
+            alert('Error processing the image file.');
+            return;
+        }
+    } else if (urlInput) {
+        // PRIORITY 2: Use the provided URL
+        finalImageSource = urlInput;
+    } else {
+        // FALLBACK: Use default image
+        finalImageSource = '../assets/images/necklace1.jpg';
+    }
+
+    if (!finalImageSource) {
+        alert('Please provide an image URL or select a local file.');
+        return;
+    }
+
+    const prods = await loadInitialProducts();
+    const newP = {
+        id: 'p'+Date.now(),
+        title: document.getElementById('title').value,
+        category: document.getElementById('category').value||'General',
+        price: Number(document.getElementById('price').value)||0,
+        stock: Number(document.getElementById('stock').value)||0,
+        image: finalImageSource,
+        tags: []
+    };
+    prods.unshift(newP);
+    saveProducts(prods);
+    alert('Product added. Redirecting to products list.');
+    window.location.href = 'products.html';
+});
+</script>
+</body>
+</html>

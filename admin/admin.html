@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>Admin - Dashboard</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container admin-layout">
+    <aside class="admin-sidebar">
+        <div class="brand">QB jwellery - Admin</div>
+        <nav style="margin-top:12px">
+            <a href="admin.html">Dashboard</a><br>
+            <a href="products.html">Products</a><br>
+            <a href="add-product.html">Add Product</a><br>
+            <a href="orders.html">Orders</a><br>
+            <a href="users.html">Users</a><br>
+            <a href="#" onclick="logout()">Logout</a>
+        </nav>
+    </aside>
+    <main style="flex:1">
+        <h2>Dashboard Overview</h2>
+        <div class="grid dashboard-stats">
+            <div class="stat-card"><h3>Total Products</h3><div id="statProducts" class="stat-value">-</div></div>
+            <div class="stat-card"><h3>Total Orders</h3><div id="statOrders" class="stat-value">-</div></div>
+            <div class="stat-card"><h3>Active Users</h3><div id="statUsers" class="stat-value">12</div></div>
+            <div class="stat-card"><h3>Stock Low</h3><div id="statStockLow" class="stat-value">3</div></div>
+        </div>
+        
+        <section class="recent-section">
+            <h3>Recent Products Added</h3>
+            <div id="recent" class="grid recent-products-grid"></div>
+        </section>
+    </main>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+if(getRole() !== 'admin'){ window.location.href = '../client/login.html'; }
+
+async function initAdmin(){
+    const prods = await loadInitialProducts();
+    const orders = getOrders(); // Assuming getOrders is available via app.js
+    
+    // 1. Update Stats
+    document.getElementById('statProducts').innerText = prods.length;
+    document.getElementById('statOrders').innerText = orders.length;
+    document.getElementById('statUsers').innerText = '12'; // Keep demo value
+    document.getElementById('statStockLow').innerText = prods.filter(p => p.stock < 5).length || 0;
+
+    // 2. Display Recent Products
+    document.getElementById('recent').innerHTML = prods.slice(0,6).map(productCardHtml).join('');
+}
+initAdmin();
+</script>
+</body>
+</html>

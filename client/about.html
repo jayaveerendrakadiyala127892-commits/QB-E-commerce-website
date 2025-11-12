@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><title>QB Jewellery - About Us</title>
+<link rel="stylesheet" href="../assets/css/style.css"></head>
+<body>
+<div class="container">
+    <header class="header">
+        <a href="index.html" class="brand-link"><div class="brand">QB Jewellery</div></a>
+        <div class="search-bar">
+            <input id="q" class="input" placeholder="Search products...">
+            <button class="search-icon-btn">🔍</button>
+        </div>
+        <nav class="main-nav">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="profile.html" id="profile-link" class="nav-link">Profile</a>
+        </nav>
+    </header>
+
+    <section class="about-content-section">
+        <div class="about-card">
+            <h1>About Us</h1>
+            <p class="about-intro-text">At QB Jewellery, we craft timeless designs in 22K and 24K gold. Each piece is hallmarked and made with care, blending traditional craftsmanship with contemporary elegance.</p>
+            <ul class="value-list">
+                <li>Certified Purity</li>
+                <li>Lifetime Service</li>
+                <li>Custom Designs</li>
+            </ul>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        © 2025 QB Jewellery. All rights reserved.
+        <div class="footer-moto">Pure • Elegant • Timeless</div>
+    </footer>
+</div>
+<script src="../assets/js/app.js"></script>
+<script>
+function updateHeaderLinks() {
+    const role = getRole();
+    const profileLink = document.getElementById('profile-link');
+    
+    if (profileLink) {
+        if (role) {
+            profileLink.href = 'profile.html';
+            profileLink.textContent = 'Profile';
+        } else {
+            profileLink.href = 'login.html';
+            profileLink.textContent = 'Login';
+        }
+    }
+}
+
+updateHeaderLinks();
+</script>
+</body>
+</html>
